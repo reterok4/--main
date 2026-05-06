@@ -3,6 +3,7 @@ import ticketRoutes from './routes/ticket.routes';
 import { errorHandler } from './middleware/error-handler';
 import userRoutes from './routes/user.routes';
 import statusRoutes from './routes/status.routes';
+import messageRoutes from './routes/ticket-message.routes';
 
 const app = express();
 const PORT = 3000;
@@ -24,6 +25,7 @@ app.get("/health", (_req,res) => res.status(200).json({ok:true}))
 app.use('/api/tickets', ticketRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/statuses', statusRoutes);
+app.use('/api/messages', messageRoutes);
 
 app.use(errorHandler);
 
