@@ -2,10 +2,10 @@ import { StatusResponseDto } from '../dtos/status.dto';
 
 class StatusRepository {
     private statuses: StatusResponseDto[] = [
-        { id: '1', name: 'New', colorCode: '#2196F3' },
-        { id: '2', name: 'InProgress', colorCode: '#FF9800' },
-        { id: '3', name: 'Resolved', colorCode: '#4CAF50' },
-        { id: '4', name: 'Closed', colorCode: '#9E9E9E' }
+        { id: '1', name: 'Новий', colorCode: '#2196F3' },
+        { id: '2', name: 'В прогресі', colorCode: '#FF9800' },
+        { id: '3', name: 'Вирішений', colorCode: '#4CAF50' },
+        { id: '4', name: 'Закритий', colorCode: '#9E9E9E' }
     ];
 
     getAll(): StatusResponseDto[] {

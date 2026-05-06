@@ -1,215 +1,350 @@
+/* Професійншуд темна палітра та змінні */
+:root {
+    --primary: #b96565;          /* Твій акцентний колір */
+    --primary-hover: #a35454;
+    --bg-body: #0f172a;          /* Глибокий темний фон сторінки */
+    --bg-card: #1e293b;          /* Трохи світліший фон для секцій */
+    --bg-input: #111827;         /* Дуже темний фон для полів вводу (щоб виділялися на картці) */
+    --text-main: #f1f5f9;        /* Майже білий текст */
+    --text-muted: #94a3b8;       /* Сірий текст для підписів */
+    --border: #334155;           /* Темні межі */
+    --success: #10b981;
+    --danger: #ef4444;
+    --shadow: 0 10px 15px -3px rgb(0 0 0 / 0.3), 0 4px 6px -4px rgb(0 0 0 / 0.3);
+}
+
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 14pt;
-    background: #f0f2f5;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 15px;
+    background-color: var(--bg-body);
     margin: 0;
-    color: #333;
+    color: var(--text-main);
+    line-height: 1.5;
 }
 
 .container {
     max-width: 1000px;
-    margin: 20px auto;
-    padding: 0 20px;
+    margin: 0 auto;
+    padding: 40px 20px;
 }
 
 header {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
 }
 
-h1 {
-    color: #b96565;
-    border-bottom: 2px solid #b96565;
-    display: inline-block;
-    padding-bottom: 10px;
+header h1 {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--text-main);
+    letter-spacing: -0.025em;
+    margin: 0;
 }
 
-nav {
+/* Навігація в темних тонах */
+.main-nav {
     display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-    background: #fff;
-    padding: 10px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    gap: 8px;
+    margin-bottom: 30px;
+    padding: 6px;
+    background: #111827;
+    border-radius: 12px;
+    width: fit-content;
+    border: 1px solid var(--border);
 }
 
 .nav-btn {
-    padding: 10px 20px;
+    padding: 8px 20px;
     border: none;
-    background: none;
+    background: transparent;
     cursor: pointer;
-    font-weight: bold;
-    color: #666;
-    border-radius: 4px;
-    transition: 0.3s;
+    font-weight: 600;
+    color: var(--text-muted);
+    border-radius: 8px;
+    transition: all 0.2s;
+}
+
+.nav-btn:hover {
+    color: var(--text-main);
+    background: rgba(255, 255, 255, 0.05);
 }
 
 .nav-btn.active {
-    background: #b96565;
-    color: white;
+    background: var(--bg-card);
+    color: var(--primary);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
 }
 
+/* Секції-картки в Dark Mode */
 section {
-    background: white;
+    background: var(--bg-card);
     padding: 24px;
-    border-radius: 8px;
-    margin-bottom: 25px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-    border-top: 5px solid #b96565;
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    margin-bottom: 30px;
 }
 
 h2 {
     margin-top: 0;
-    font-size: 18pt;
-    color: #444;
+    margin-bottom: 20px;
+    font-size: 20px;
+    font-weight: 700;
+    border-left: 4px solid var(--primary);
+    padding-left: 12px;
+    color: var(--text-main);
 }
 
+/* --- ОНОВЛЕНІ ТЕКСТОВІ ПОЛЯ (INPUTS) --- */
 .field {
-    margin-bottom: 15px;
+    margin-bottom: 16px;
 }
 
 .field label {
     display: block;
     margin-bottom: 6px;
+    font-size: 14px;
     font-weight: 600;
+    color: var(--text-muted);
 }
 
 .field input,
 .field select,
-.field textarea {
+.field textarea,
+.toolbar input,
+.toolbar select,
+.inline-form input,
+.inline-form select {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
+    padding: 12px 16px;
+    background-color: #1e293b; /* Приємний темно-сірий фон полів */
+    color: #f8fafc;            /* Світлий текст всередині */
+    border: 1px solid #334155; /* Тонка темна межа */
+    border-radius: 8px;
+    font-size: 15px;
+    transition: all 0.2s ease;
     box-sizing: border-box;
-    font-size: 14px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15); /* Легка внутрішня тінь для об'єму */
 }
 
+::-webkit-input-placeholder { color: #64748b; font-weight: 400; }
+::-moz-placeholder { color: #64748b; font-weight: 400; opacity: 1; }
+:-ms-input-placeholder { color: #64748b; font-weight: 400; }
+::placeholder { color: #64748b; font-weight: 400; opacity: 1; }
+
+/* Спеціальний стиль для вибору кольору (як на скрінах) */
+.field input[type="color"] {
+    padding: 2px;
+    height: 45px;
+    cursor: pointer;
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+}
+
+input[type="color"] {
+    padding: 2px !important;
+    height: 47px;
+    cursor: pointer;
+}
+
+/* Утиліти для тулбару та форм в один рядок */
+.toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.toolbar input, 
+.toolbar select {
+    flex: 1;
+    min-width: 200px;
+}
+
+.inline-form {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 25px;
+    align-items: center;
+}
+
+.inline-form input, 
+.inline-form select {
+    flex: 1;
+}
+
+/* Ефект фокусування (підсвічування акцентним кольором) */
 .field input:focus, 
 .field select:focus, 
 .field textarea:focus {
     outline: none;
-    border-color: #b96565;
-    box-shadow: 0 0 0 2px rgba(185, 101, 101, 0.2);
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(185, 101, 101, 0.15); /* Легке світіння твоїм кольором */
 }
 
-.buttons {
-    display: flex;
-    gap: 10px;
+/* Покращений вигляд select в темній темі */
+.field select {
+    appearance: none; /* Прибираємо стандартну стрілку */
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%2394a3b8' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'%3e%3c/path%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 1.5em 1.5em;
+    padding-right: 40px;
 }
 
+/* Кнопки */
 button {
-    padding: 10px 18px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
+    padding: 10px 20px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
     cursor: pointer;
     font-weight: 600;
-    transition: 0.2s;
+    transition: all 0.2s;
+    font-size: 14px;
 }
 
 button[type="submit"] {
-    background: #5acb61;
+    background: var(--primary);
     color: white;
-    border-color: #5acb61;
+    border: none;
 }
 
 button[type="submit"]:hover {
-    background: #4bad53;
+    background: var(--primary-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(185, 101, 101, 0.3);
 }
 
 #resetBtn {
-    background: #f8f9fa;
+    background: #334155; /* Темно-сіра кнопка */
+    color: var(--text-main);
+    border: none;
 }
 
+#resetBtn:hover {
+    background: #475569;
+}
+
+.back-btn {
+    background: #334155;
+    color: white;
+    border: none;
+}
+
+/* Таблиці в Dark Mode */
 table {
     width: 100%;
-    border-collapse: collapse;
-    margin-top: 15px;
-    background: white;
-}
-
-th, td {
-    padding: 12px 15px;
-    text-align: left;
-    border-bottom: 1px solid #eee;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-top: 10px;
 }
 
 th {
-    background: #fafafa;
+    background: #111827; /* Темніший заголовок */
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 13px;
     text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    border-bottom: 2px solid var(--border);
+}
+
+td {
+    padding: 16px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+    color: var(--text-main);
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+/* Ефект наведення на рядок таблиці (Dark) */
+tr:hover td {
+    background-color: #334155;
+}
+
+/* Кнопки дій у таблиці */
+.edit-btn, .delete-btn, .msg-btn {
+    padding: 6px 12px;
     font-size: 12px;
-    letter-spacing: 1px;
-    color: #777;
-}
-
-tr:hover {
-    background-color: #f9f9f9;
-}
-
-.status-badge {
-    padding: 4px 8px;
-    border-radius: 12px;
-    font-size: 12px;
-    font-weight: bold;
-    text-transform: uppercase;
-}
-
-#messages-container {
-    max-height: 400px;
-    overflow-y: auto;
-    padding: 15px;
-    background: #fdfdfd;
-    border: 1px solid #eee;
     border-radius: 8px;
-    margin-bottom: 15px;
+    background: transparent;
 }
 
-.message-item {
-    margin-bottom: 15px;
-    padding: 10px 15px;
-    border-radius: 10px;
-    max-width: 80%;
-    position: relative;
+.msg-btn { color: var(--primary); border-color: var(--primary); }
+.msg-btn:hover { background: var(--primary); color: white; }
+
+.edit-btn { color: var(--text-main); border-color: var(--border); }
+.edit-btn:hover { background: var(--border); }
+
+.delete-btn {
+    color: var(--danger);
+    border-color: var(--danger);
 }
 
-.message-item.client {
-    background: #e1f5fe;
-    align-self: flex-start;
-    border-left: 4px solid #03a9f4;
+.delete-btn:hover {
+    background: var(--danger);
+    color: white;
 }
 
-.message-item.support {
-    background: #f1f8e9;
-    align-self: flex-end;
-    margin-left: auto;
-    border-right: 4px solid #8bc34a;
-}
-
-.message-header {
-    font-size: 12px;
-    font-weight: bold;
-    margin-bottom: 5px;
+/* Чат (Повідомлення) в Dark Mode */
+.messages-container {
+    background: #111827; /* Темний фон чату */
+    border: 1px solid var(--border);
+    padding: 20px;
+    height: 350px;
+    overflow-y: auto;
+    border-radius: 12px;
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    gap: 12px;
 }
 
-.message-time {
-    color: #999;
-    font-weight: normal;
+.message-card {
+    background: var(--bg-card); /* Світліші бульбашки */
+    padding: 12px 16px;
+    border-radius: 12px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    max-width: 85%;
+    border: 1px solid var(--border);
+    color: var(--text-main);
+}
+
+.message-meta {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+    color: var(--primary);
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+/* Анімація появи секцій */
+.view-section {
+    display: none;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.view-section.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Валідація */
+.error-text {
+    color: var(--danger);
+    font-size: 12px;
+    margin-top: 4px;
 }
 
 .invalid {
-    border-color: #d32f2f !important;
-}
-
-.error-text {
-    margin: 4px 0 0;
-    font-size: 11px;
-    color: #d32f2f;
-    min-height: 15px;
-}
-
-.hidden {
-    display: none;
+    border-color: var(--danger) !important;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
 }

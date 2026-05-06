@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "tsx watch src/index.ts",
     "start": "node dist/index.js",
-    "lint": "eslint .",
+    "lint": "eslint . --ext .ts,.js",
+    "lint:fix": "eslint . --ext .ts,.js --fix",
     "build": "tsc"
   },
   "repository": {
@@ -27,11 +28,15 @@
     "uuid": "^14.0.0"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@types/express": "^4.17.25",
     "@types/node": "^20.12.7",
     "@types/uuid": "^9.0.8",
+    "eslint": "^10.3.0",
+    "globals": "^17.6.0",
     "nodemon": "^3.1.14",
     "tsx": "^4.21.0",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.59.2"
   }
 }
