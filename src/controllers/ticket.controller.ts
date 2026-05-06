@@ -4,8 +4,8 @@ import service from '../services/ticket.service';
 class TicketController {
     getAll(req: Request, res: Response, next: NextFunction) {
         try {
-            const { status, sort } = req.query;
-            const items = service.getAll(status as string, sort as 'asc' | 'desc');
+            const { statusId, sort } = req.query;
+            const items = service.getAll(statusId as string, sort as 'asc' | 'desc');
             res.status(200).json({ items });
         } catch (e) { next(e); }
     }
