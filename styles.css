@@ -1,0 +1,119 @@
+body {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    background: #f5f5f5ab;
+    margin: 0;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 16px;
+}
+
+section {
+    background: #b96565;
+    padding: 16px;
+    border: 1px solid #000000;
+    border-radius: 6px;
+    margin-bottom: 20px;
+}
+
+.field {
+    margin-bottom: 12px;
+}
+
+.field label {
+    display: block;
+    margin-bottom: 4px;
+    font-weight: bold;
+}
+
+.field input,
+.field select,
+.field textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #bbb;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.invalid {
+    border-color: #c00 !important;
+}
+
+.error-text {
+    margin: 4px 0 0;
+    font-size: 12px;
+    color: #c00;
+    min-height: 14px;
+}
+
+.buttons {
+    margin-top: 12px;
+    display: flex;
+    gap: 8px;
+}
+
+button {
+    padding: 8px 12px;
+    border: 1px solid #888;
+    border-radius: 4px;
+    cursor: pointer;
+    background: #fff;
+}
+
+button[type="submit"] {
+    background: #5acb61;
+    color: white;
+    border-color: #5acb61;
+}
+
+button[type="submit"]:hover {
+    background: #5acb61;
+}
+
+
+.toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.toolbar input, 
+.toolbar select {
+    flex: 1;
+    min-width: 200px;
+    padding: 8px;
+    border: 1px solid #bbb;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+th, td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background: #eee;
+}
+
+.edit-btn, .delete-btn {
+    padding: 4px 8px;
+    font-size: 12px;
+    margin-right: 4px;
+}
+
+.delete-btn {
+    color: #c00;
+    border-color: #c00;
+}
