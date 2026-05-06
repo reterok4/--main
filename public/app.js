@@ -1,26 +1,23 @@
 const API_URL = "/api";
 
-// Локальні стани
 let tickets = [];
 let users = [];
 let statuses = [];
 let currentMessages = [];
 
 let editingId = null; 
-let openedTicketId = null; // Для вкладки повідомлень
+let openedTicketId = null;
 
 let searchQuery = "";
 let filterStatusId = "";
 let sortOption = "";
 
-// --- НАВІГАЦІЯ В МЕНЮ ---
 document.querySelectorAll('.nav-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
-        // Змінюємо активну кнопку
+    
         document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
         e.target.classList.add('active');
         
-        // Показуємо потрібну секцію
         document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active'));
         const targetId = e.target.dataset.target;
         document.getElementById(targetId).classList.add('active');
@@ -31,7 +28,6 @@ document.getElementById('backToTicketsBtn').addEventListener('click', () => {
     document.querySelector('[data-target="tickets-view"]').click();
 });
 
-// --- FETCH ДАНИХ (Замість localStorage) ---
 async function fetchAllData() {
     try {
         const [uRes, sRes, tRes] = await Promise.all([
@@ -53,7 +49,6 @@ async function fetchAllData() {
     }
 }
 
-// Заповнюємо випадаючі списки (<select>)
 function populateDropdowns() {
     const userOpts = `<option value="">Оберіть...</option>` + users.map(u => `<option value="${u.id}">${u.name}</option>`).join("");
     document.getElementById("authorSelect").innerHTML = userOpts;
@@ -64,7 +59,6 @@ function populateDropdowns() {
     document.getElementById("filterStatus").innerHTML = `<option value="">Усі статуси</option>` + statusOpts;
 }
 
-// --- РЕНДЕР ТАБЛИЦЬ ---
 function renderUsersTable() {
     document.getElementById("usersTableBody").innerHTML = users.map(u => `
         <tr>
@@ -87,11 +81,9 @@ function renderStatusesTable() {
 function renderTicketsTable() {
     const tbody = document.getElementById("ticketsTableBody");
     
-    // Фільтрація клієнтська
     let processedTickets = tickets.filter(t => t.subject.toLowerCase().includes(searchQuery));
     if (filterStatusId) processedTickets = processedTickets.filter(t => t.statusId === filterStatusId);
 
-    // Сортування клієнтське
     if (sortOption !== "") {
         const priorityWeight = { "Low": 1, "Medium": 2, "High": 3 };
         processedTickets.sort((a, b) => {
@@ -126,7 +118,6 @@ function renderTicketsTable() {
     }).join("");
 }
 
-// --- РОБОТА З ФОРМОЮ ТІКЕТА (Твій оригінальний код з адаптацією) ---
 function showError(inputId, errorId, message) {
     document.getElementById(inputId).classList.add("invalid");
     document.getElementById(errorId).innerHTML = message;
@@ -179,7 +170,6 @@ document.getElementById("ticketForm").addEventListener("submit", async (e) => {
     fetchAllData();
 });
 
-// --- CRUD ОПЕРАЦІЇ З КНОПОК ---
 window.deleteTicket = async (id) => {
     await fetch(`${API_URL}/tickets/${id}`, { method: "DELETE" });
     fetchAllData();
@@ -199,7 +189,6 @@ window.editTicket = (id) => {
     window.scrollTo(0, 0);
 };
 
-// --- КОРИСТУВАЧІ ТА СТАТУСИ (Форми) ---
 document.getElementById("userForm").addEventListener("submit", async (e) => {
     e.preventDefault();
     const dto = {
@@ -233,13 +222,11 @@ window.deleteStatus = async (id) => {
     fetchAllData();
 };
 
-// --- ЧАТ / ПОВІДОМЛЕННЯ ---
 window.openMessages = async (ticketId) => {
     openedTicketId = ticketId;
     const ticket = tickets.find(t => t.id === ticketId);
     document.getElementById("chatTicketSubject").textContent = "Тема: " + ticket.subject;
     
-    // Перемикаємо вкладку
     document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active'));
     document.getElementById("messages-view").classList.add('active');
     
@@ -274,11 +261,9 @@ document.getElementById("messageForm").addEventListener("submit", async (e) => {
     await loadMessages();
 });
 
-// --- ФІЛЬТРИ ---
 document.getElementById("searchInput").addEventListener("input", (e) => { searchQuery = e.target.value.toLowerCase().trim(); renderTicketsTable(); });
 document.getElementById("filterStatus").addEventListener("change", (e) => { filterStatusId = e.target.value; renderTicketsTable(); });
 document.getElementById("sortPriority").addEventListener("change", (e) => { sortOption = e.target.value; renderTicketsTable(); });
 document.getElementById("resetBtn").addEventListener("click", () => { document.getElementById("ticketForm").reset(); editingId = null; document.getElementById("submitBtn").textContent = "Додати"; clearAllErrors(); });
 
-// Запуск
 fetchAllData();

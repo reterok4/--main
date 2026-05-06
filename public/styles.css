@@ -1,13 +1,12 @@
-/* Професійншуд темна палітра та змінні */
 :root {
-    --primary: #b96565;          /* Твій акцентний колір */
+    --primary: #b96565;       
     --primary-hover: #a35454;
-    --bg-body: #0f172a;          /* Глибокий темний фон сторінки */
-    --bg-card: #1e293b;          /* Трохи світліший фон для секцій */
-    --bg-input: #111827;         /* Дуже темний фон для полів вводу (щоб виділялися на картці) */
-    --text-main: #f1f5f9;        /* Майже білий текст */
-    --text-muted: #94a3b8;       /* Сірий текст для підписів */
-    --border: #334155;           /* Темні межі */
+    --bg-body: #0f172a;          
+    --bg-card: #1e293b;          
+    --bg-input: #111827;        
+    --text-main: #f1f5f9;        
+    --text-muted: #94a3b8;       
+    --border: #334155;           
     --success: #10b981;
     --danger: #ef4444;
     --shadow: 0 10px 15px -3px rgb(0 0 0 / 0.3), 0 4px 6px -4px rgb(0 0 0 / 0.3);
@@ -41,7 +40,6 @@ header h1 {
     margin: 0;
 }
 
-/* Навігація в темних тонах */
 .main-nav {
     display: flex;
     gap: 8px;
@@ -75,7 +73,6 @@ header h1 {
     box-shadow: 0 1px 3px rgba(0,0,0,0.3);
 }
 
-/* Секції-картки в Dark Mode */
 section {
     background: var(--bg-card);
     padding: 24px;
@@ -95,7 +92,6 @@ h2 {
     color: var(--text-main);
 }
 
-/* --- ОНОВЛЕНІ ТЕКСТОВІ ПОЛЯ (INPUTS) --- */
 .field {
     margin-bottom: 16px;
 }
@@ -117,14 +113,14 @@ h2 {
 .inline-form select {
     width: 100%;
     padding: 12px 16px;
-    background-color: #1e293b; /* Приємний темно-сірий фон полів */
-    color: #f8fafc;            /* Світлий текст всередині */
-    border: 1px solid #334155; /* Тонка темна межа */
+    background-color: #1e293b;
+    color: #f8fafc;           
+    border: 1px solid #334155; 
     border-radius: 8px;
     font-size: 15px;
     transition: all 0.2s ease;
     box-sizing: border-box;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15); /* Легка внутрішня тінь для об'єму */
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15); 
 }
 
 ::-webkit-input-placeholder { color: #64748b; font-weight: 400; }
@@ -132,7 +128,6 @@ h2 {
 :-ms-input-placeholder { color: #64748b; font-weight: 400; }
 ::placeholder { color: #64748b; font-weight: 400; opacity: 1; }
 
-/* Спеціальний стиль для вибору кольору (як на скрінах) */
 .field input[type="color"] {
     padding: 2px;
     height: 45px;
@@ -147,7 +142,6 @@ input[type="color"] {
     cursor: pointer;
 }
 
-/* Утиліти для тулбару та форм в один рядок */
 .toolbar {
     display: flex;
     flex-wrap: wrap;
@@ -173,18 +167,16 @@ input[type="color"] {
     flex: 1;
 }
 
-/* Ефект фокусування (підсвічування акцентним кольором) */
 .field input:focus, 
 .field select:focus, 
 .field textarea:focus {
     outline: none;
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(185, 101, 101, 0.15); /* Легке світіння твоїм кольором */
+    box-shadow: 0 0 0 3px rgba(185, 101, 101, 0.15); 
 }
 
-/* Покращений вигляд select в темній темі */
 .field select {
-    appearance: none; /* Прибираємо стандартну стрілку */
+    appearance: none;
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%2394a3b8' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'%3e%3c/path%3e%3c/svg%3e");
     background-repeat: no-repeat;
     background-position: right 12px center;
@@ -192,7 +184,6 @@ input[type="color"] {
     padding-right: 40px;
 }
 
-/* Кнопки */
 button {
     padding: 10px 20px;
     border: 1px solid var(--border);
@@ -216,7 +207,7 @@ button[type="submit"]:hover {
 }
 
 #resetBtn {
-    background: #334155; /* Темно-сіра кнопка */
+    background: #334155;
     color: var(--text-main);
     border: none;
 }
@@ -231,7 +222,6 @@ button[type="submit"]:hover {
     border: none;
 }
 
-/* Таблиці в Dark Mode */
 table {
     width: 100%;
     border-collapse: separate;
@@ -240,7 +230,7 @@ table {
 }
 
 th {
-    background: #111827; /* Темніший заголовок */
+    background: #111827;
     padding: 12px 16px;
     text-align: left;
     font-size: 13px;
@@ -261,12 +251,10 @@ tr:last-child td {
     border-bottom: none;
 }
 
-/* Ефект наведення на рядок таблиці (Dark) */
 tr:hover td {
     background-color: #334155;
 }
 
-/* Кнопки дій у таблиці */
 .edit-btn, .delete-btn, .msg-btn {
     padding: 6px 12px;
     font-size: 12px;
@@ -290,9 +278,8 @@ tr:hover td {
     color: white;
 }
 
-/* Чат (Повідомлення) в Dark Mode */
 .messages-container {
-    background: #111827; /* Темний фон чату */
+    background: #111827;
     border: 1px solid var(--border);
     padding: 20px;
     height: 350px;
@@ -304,7 +291,7 @@ tr:hover td {
 }
 
 .message-card {
-    background: var(--bg-card); /* Світліші бульбашки */
+    background: var(--bg-card);
     padding: 12px 16px;
     border-radius: 12px;
     box-shadow: 0 1px 2px rgba(0,0,0,0.2);
@@ -322,7 +309,6 @@ tr:hover td {
     margin-bottom: 4px;
 }
 
-/* Анімація появи секцій */
 .view-section {
     display: none;
     animation: fadeIn 0.3s ease-in-out;
@@ -337,7 +323,6 @@ tr:hover td {
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* Валідація */
 .error-text {
     color: var(--danger);
     font-size: 12px;
