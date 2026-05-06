@@ -1,4 +1,4 @@
-export type TicketPriority = 'Low' | 'Medium' | 'High';
+export type TicketPriority = 'Низький' | 'Середній' | 'Високий';
 
 export interface CreateTicketDto {
     authorId: string;
@@ -12,5 +12,5 @@ export interface UpdateTicketDto extends Partial<CreateTicketDto> {}
 
 export interface TicketResponseDto extends CreateTicketDto {
     id: string;
-    createdAt: Date;
+    
 }

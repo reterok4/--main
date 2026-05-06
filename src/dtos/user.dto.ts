@@ -1,4 +1,4 @@
-export type UserRole = 'Admin' | 'Client' | 'Support';
+export type UserRole = 'Адмін' | 'Клієнт' | 'Підтримка';
 
 export interface CreateUserDto {
     name: string;
