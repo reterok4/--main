@@ -18,8 +18,10 @@
                 <h2>Створити тікет</h2>
                 <form id="ticketForm">
                     <div class="field">
-                        <label for="authorInput">Автор</label>
-                        <input id="authorInput" type="text" placeholder="Ім'я або логін" />
+                        <label for="authorSelect">Автор</label>
+                        <select id="authorSelect">
+                            <option value="">Завантаження користувачів...</option>
+                        </select>
                         <p class="error-text" id="authorError"></p>
                     </div>
 
@@ -32,11 +34,7 @@
                     <div class="field">
                         <label for="statusSelect">Статус</label>
                         <select id="statusSelect">
-                            <option value="">Оберіть статус</option>
-                            <option value="New">Новий</option>
-                            <option value="InProgress">В прогресі</option>
-                            <option value="Resolved">Вирішений</option>
-                            <option value="Closed">Закритий</option>
+                            <option value="">Завантаження статусів...</option>
                         </select>
                         <p class="error-text" id="statusError"></p>
                     </div>
@@ -65,16 +63,11 @@
                 </form>
             </section>
 
-            
             <section id="controls-section">
                 <div class="toolbar">
-                    <input type="text" id="searchInput" placeholder="Пошук за темою чи автором..." />
+                    <input type="text" id="searchInput" placeholder="Пошук за темою..." />
                     <select id="filterStatus">
                         <option value="">Усі статуси</option>
-                        <option value="New">Новий</option>
-                        <option value="InProgress">В прогресі</option>
-                        <option value="Resolved">Вирішений</option>
-                        <option value="Closed">Закритий</option>
                     </select>
                     <select id="sortPriority">
                         <option value="">Без сортування</option>

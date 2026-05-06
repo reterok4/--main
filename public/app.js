@@ -1,28 +1,13 @@
-const STORAGE_KEY = "tickets_data";
+const API_URL = "/api";
+
 let tickets = [];
+let users = [];
+let statuses = [];
 let editingId = null; 
 
-
 let searchQuery = "";
-let filterStatus = "";
+let filterStatusId = "";
 let sortOption = "";
-
-
-function loadFromStorage() {
-    const json = localStorage.getItem(STORAGE_KEY);
-    if (!json) return [];
-    try {
-        const data = JSON.parse(json);
-        return Array.isArray(data) ? data : [];
-    } catch {
-        return [];
-    }
-}
-
-function saveToStorage(items) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
-}
-
 
 const form = document.getElementById("ticketForm");
 const tbody = document.getElementById("ticketsTableBody");
@@ -32,18 +17,103 @@ const submitBtn = document.getElementById("submitBtn");
 const searchInput = document.getElementById("searchInput");
 const filterStatusSelect = document.getElementById("filterStatus");
 const sortPrioritySelect = document.getElementById("sortPriority");
+const authorSelect = document.getElementById("authorSelect");
+const statusSelect = document.getElementById("statusSelect");
+
+
+async function fetchInitialData() {
+    try {
+        const [usersRes, statusesRes] = await Promise.all([
+            fetch(`${API_URL}/users`),
+            fetch(`${API_URL}/statuses`)
+        ]);
+        
+        const usersData = await usersRes.json();
+        const statusesData = await statusesRes.json();
+        
+        users = usersData.items || [];
+        statuses = statusesData.items || [];
+        
+        populateDropdowns();
+        await fetchTickets();
+    } catch (error) {
+        console.error("Помилка завантаження базових даних:", error);
+    }
+}
+
+async function fetchTickets() {
+    try {
+        let url = `${API_URL}/tickets?`;
+        if (filterStatusId) url += `statusId=${filterStatusId}&`;
+        if (sortOption) url += `sort=${sortOption}`;
+
+        const res = await fetch(url);
+        const data = await res.json();
+        tickets = data.items || [];
+        renderTable();
+    } catch (error) {
+        console.error("Помилка завантаження тікетів:", error);
+    }
+}
+
+function populateDropdowns() {
+    authorSelect.innerHTML = `<option value="">Оберіть автора</option>` + 
+        users.map(u => `<option value="${u.id}">${u.name} (${u.role})</option>`).join("");
+
+    statusSelect.innerHTML = `<option value="">Оберіть статус</option>` + 
+        statuses.map(s => `<option value="${s.id}">${s.name}</option>`).join("");
+
+    filterStatusSelect.innerHTML = `<option value="">Усі статуси</option>` + 
+        statuses.map(s => `<option value="${s.id}">${s.name}</option>`).join("");
+}
+
+function renderTable() {
+    let processedTickets = tickets.filter(t => 
+        t.subject.toLowerCase().includes(searchQuery)
+    );
+
+    if (processedTickets.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align: center;">Немає записів</td></tr>`;
+        return;
+    }
+
+    const rowsHtml = processedTickets.map((t, index) => {
+        const author = users.find(u => u.id === t.authorId);
+        const authorName = author ? author.name : "Невідомий";
+        
+        const status = statuses.find(s => s.id === t.statusId);
+        const statusHtml = status 
+            ? `<span style="color: ${status.colorCode}; font-weight: bold;">${status.name}</span>`
+            : "Невідомо";
+
+        return `
+            <tr>
+                <td>${index + 1}</td>
+                <td>${authorName}</td>
+                <td>${t.subject}</td>
+                <td>${statusHtml}</td>
+                <td>${t.priority}</td>
+                <td>
+                    <button type="button" class="edit-btn" data-id="${t.id}">Редагувати</button>
+                    <button type="button" class="delete-btn" data-id="${t.id}">Видалити</button>
+                </td>
+            </tr>
+        `;
+    }).join("");
+
+    tbody.innerHTML = rowsHtml;
+}
 
 
 function readForm() {
     return {
-        author: document.getElementById("authorInput").value.trim(),
+        authorId: authorSelect.value,
         subject: document.getElementById("subjectInput").value.trim(),
-        status: document.getElementById("statusSelect").value,
+        statusId: statusSelect.value,
         priority: document.getElementById("prioritySelect").value,
         message: document.getElementById("messageInput").value.trim()
     };
 }
-
 
 function showError(inputId, errorId, message) {
     document.getElementById(inputId).classList.add("invalid");
@@ -56,7 +126,7 @@ function clearError(inputId, errorId) {
 }
 
 function clearAllErrors() {
-    clearError("authorInput", "authorError");
+    clearError("authorSelect", "authorError");
     clearError("subjectInput", "subjectError");
     clearError("statusSelect", "statusError");
     clearError("prioritySelect", "priorityError");
@@ -67,131 +137,64 @@ function validate(dto) {
     clearAllErrors();
     let isValid = true;
 
-    if (dto.author === "") {
-        showError("authorInput", "authorError", "Поле є обов’язковим.");
-        isValid = false;
-    } else if (dto.author.length < 3) {
-        showError("authorInput", "authorError", "Ім'я має містити щонайменше 3 символи.");
-        isValid = false;
-    }
-
-    if (dto.subject === "") {
-        showError("subjectInput", "subjectError", "Поле є обов’язковим.");
-        isValid = false;
-    }
-
-    if (dto.status === "") {
-        showError("statusSelect", "statusError", "Оберіть статус зі списку.");
-        isValid = false;
-    }
-
-    if (dto.priority === "") {
-        showError("prioritySelect", "priorityError", "Оберіть пріоритет зі списку.");
-        isValid = false;
-    }
-
-    if (dto.message.length < 5) {
-        showError("messageInput", "messageError", "Коментар має містити щонайменше 5 символів.");
-        isValid = false;
-    }
+    if (!dto.authorId) { showError("authorSelect", "authorError", "Оберіть автора."); isValid = false; }
+    if (!dto.subject) { showError("subjectInput", "subjectError", "Поле є обов’язковим."); isValid = false; }
+    if (!dto.statusId) { showError("statusSelect", "statusError", "Оберіть статус."); isValid = false; }
+    if (!dto.priority) { showError("prioritySelect", "priorityError", "Оберіть пріоритет."); isValid = false; }
+    if (dto.message.length < 5) { showError("messageInput", "messageError", "Мінімум 5 символів."); isValid = false; }
 
     return isValid;
 }
 
-
-function renderTable() {
-    
-    let processedTickets = tickets.filter(t => {
-        const matchesSearch = t.subject.toLowerCase().includes(searchQuery) || 
-                              t.author.toLowerCase().includes(searchQuery);
-        const matchesStatus = filterStatus === "" || t.status === filterStatus;
-        return matchesSearch && matchesStatus;
-    });
-
-    
-    if (sortOption !== "") {
-        
-        const priorityWeight = { "Low": 1, "Medium": 2, "High": 3 };
-        
-        processedTickets.sort((a, b) => {
-            const weightA = priorityWeight[a.priority] || 0;
-            const weightB = priorityWeight[b.priority] || 0;
-            
-            if (sortOption === "asc") {
-                return weightA - weightB; 
-            } else {
-                return weightB - weightA; 
-            }
-        });
-    }
-
-    if (processedTickets.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" style="text-align: center;">Немає записів</td></tr>`;
-        return;
-    }
-
-    const rowsHtml = processedTickets.map((t, index) => `
-        <tr>
-            <td>${index + 1}</td>
-            <td>${t.author}</td>
-            <td>${t.subject}</td>
-            <td>${t.status}</td>
-            <td>${t.priority}</td>
-            <td>
-                <button type="button" class="edit-btn" data-id="${t.id}">Редагувати</button>
-                <button type="button" class="delete-btn" data-id="${t.id}">Видалити</button>
-            </td>
-        </tr>
-    `).join("");
-
-    tbody.innerHTML = rowsHtml;
-}
-
-
-form.addEventListener("submit", (event) => {
+form.addEventListener("submit", async (event) => {
     event.preventDefault();
-
     const dto = readForm();
-    const isValid = validate(dto);
+    if (!validate(dto)) return;
 
-    if (!isValid) return;
+    try {
+        const method = editingId ? "PUT" : "POST";
+        const url = editingId ? `${API_URL}/tickets/${editingId}` : `${API_URL}/tickets`;
 
-    if (editingId !== null) {
-        const index = tickets.findIndex(t => t.id === editingId);
-        if (index !== -1) {
-            tickets[index] = { ...tickets[index], ...dto };
-        }
+        const response = await fetch(url, {
+            method,
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(dto)
+        });
+
+        if (!response.ok) throw new Error("Помилка збереження");
+
         editingId = null;
         submitBtn.textContent = "Додати";
-    } else {
-        const newId = tickets.length > 0 ? Math.max(...tickets.map(t => t.id)) + 1 : 1;
-        tickets.push({ id: newId, ...dto });
+        form.reset();
+        await fetchTickets();
+    } catch (error) {
+        console.error(error);
+        alert("Не вдалося зберегти тікет");
     }
-
-    saveToStorage(tickets);
-    renderTable();
-    form.reset();
 });
 
-tbody.addEventListener("click", (event) => {
+
+tbody.addEventListener("click", async (event) => {
     const target = event.target;
+    const id = target.dataset.id;
 
     if (target.classList.contains("delete-btn")) {
-        const id = Number(target.dataset.id);
-        tickets = tickets.filter(t => t.id !== id);
-        saveToStorage(tickets);
-        renderTable();
+        if (!confirm("Ви впевнені, що хочете видалити цей тікет?")) return;
+        try {
+            await fetch(`${API_URL}/tickets/${id}`, { method: "DELETE" });
+            await fetchTickets();
+        } catch (error) {
+            console.error("Помилка видалення", error);
+        }
         return;
     }
 
     if (target.classList.contains("edit-btn")) {
-        const id = Number(target.dataset.id);
         const ticketToEdit = tickets.find(t => t.id === id);
-        
         if (ticketToEdit) {
-            document.getElementById("authorInput").value = ticketToEdit.author;
+            authorSelect.value = ticketToEdit.authorId;
             document.getElementById("subjectInput").value = ticketToEdit.subject;
-            document.getElementById("statusSelect").value = ticketToEdit.status;
+            statusSelect.value = ticketToEdit.statusId;
             document.getElementById("prioritySelect").value = ticketToEdit.priority;
             document.getElementById("messageInput").value = ticketToEdit.message;
             
@@ -199,7 +202,6 @@ tbody.addEventListener("click", (event) => {
             submitBtn.textContent = "Зберегти";
             clearAllErrors();
         }
-        return;
     }
 });
 
@@ -210,22 +212,19 @@ resetBtn.addEventListener("click", () => {
     submitBtn.textContent = "Додати";
 });
 
-
 searchInput.addEventListener("input", (event) => {
     searchQuery = event.target.value.toLowerCase().trim();
     renderTable();
 });
 
 filterStatusSelect.addEventListener("change", (event) => {
-    filterStatus = event.target.value;
-    renderTable();
+    filterStatusId = event.target.value;
+    fetchTickets();
 });
 
 sortPrioritySelect.addEventListener("change", (event) => {
     sortOption = event.target.value;
-    renderTable();
+    fetchTickets();
 });
 
-
-tickets = loadFromStorage();
-renderTable();
+fetchInitialData();
